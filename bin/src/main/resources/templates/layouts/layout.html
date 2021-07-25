@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="..\img\cover\openbook.png">
+    <title>ADMIN PAGE</title>
+    <!-- Bootstrap CSS -->
+    <!-- <link href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css" rel="stylesheet"> -->
+
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- full calendar css-->
+    <link href="assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
+    <link href="assets/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <!-- easy pie chart-->
+    <link href="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="css/owl.carousel.css" type="text/css">
+    <link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="css/fullcalendar.css">
+    <link href="css/widgets.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet" />
+    <link href="css/xcharts.min.css" rel=" stylesheet">
+    <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+
+	<!-- Link Css table -->
+	<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap.min.css" rel=" stylesheet">
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div th:replace="fragments/header :: header"></div>
+    </header>
+
+    <!-- Aside -->
+    <aside>
+        <div th:replace="fragments/aside :: aside"></div>
+    </aside>
+        
+    <!-- Content -->
+    <div layout:fragment="content">
+        <p>Content goes here...</p>
+
+    </div>
+        
+    <!-- Footer -->
+    <footer>
+    </footer>
+
+	
+	<div class="modal fade" tabindex="-1" role="dialog" id="photoModal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Photo</h5>
+				</div>
+			<div class="modal-body" style="text-align: center;">
+				<img id="employeePhoto" src="" width="70%" height="70%">
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+		</div>
+	</div> 
+	
+	<div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Confirm Delete</h5>
+				</div>
+				<div class="modal-body">
+					<p>Bạn có chắc là muốn xóa bản ghi này?</p>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-primary" id="confirmDeleteButton" href="">Yes, Delete</a>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<!-- Add modal -->
+	<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Create User</h5>
+			</div>
+			<div class="modal-body">
+				<form th:action="@{/users/addNew}" method="post">
+					<div class="row">
+						<div class="form-group col-sm-6">
+							<label>USERNAME:</label>
+							<input type="text" class="form-control" placeholder="Username"
+								name="username" id="username" autofocus required>
+						</div>
+
+						<div class="form-group col-sm-6">
+							<label>AVATAR:</label>
+							<div class="form-control">
+								<input type="file" class="form-control-file" id="photo" name="photo" placeholder="Select File" accept="image/*">
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-sm-6">
+							<label>PASSWORD:</label>
+							<input type="password" class="form-control"
+								placeholder="Password" id="password" name="password" required>
+						</div>
+
+						<div class="form-group col-sm-6">
+							<label>CONFIRM PASSWORD:</label>
+							<input type="password" class="form-control"
+								placeholder="Confirm Password" id="confirmPassword" name="confirmPassword" required>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-sm-6">
+							</i><label>FIRSTNAME:</label>
+							<input type="text" class="form-control" placeholder="Firstname"
+								autofocus name="firstname">
+						</div>
+
+						<div class="form-group col-sm-6">
+							<label>LASTNAME:</label>
+							<input type="text" class="form-control" placeholder="Lastname"
+								autofocus name="lastname">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-sm-6">
+							<label>ENABLED:</label>
+							<div class="form-group">
+								<select class="form-control" id="enabled" name="enabled">			    
+									<option value="true"  selected="selected">ACTIVE</option>
+									<option value="false">INACTIVE</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group col-sm-6">
+							<label>ROLE:</label>
+							<div class="form-group">
+								<select class="form-control" id="roles" name="roles">	    
+									<option>ADMIN</option>
+									<option  selected="selected">USER</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal-footer ">
+						<button type="submit" class="btn btn-primary" href="/users">Submit</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+	</div>
+
+	<div class="modal fade" id="addPTModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Add Product Type</h5>
+			</div>
+			<div class="modal-body">
+				<form th:action="@{/producttypes/addNew}" method="post">
+					<!-- <div class="form-group">
+						<label for="recipient-name" class="col-form-label">ID:</label>
+						<input type="text" class="form-control" id="recipient-name" name="id">
+					</div> -->
+
+					<div class="form-group">
+						<label for="recipient-name" class="col-form-label">Loại sản phẩm:</label>
+						<input type="text" class="form-control" id="recipient-name" name="type">
+					</div>
+
+					<div class="form-group">
+						<label for="recipient-name" class="col-form-label">Thể loại:</label>
+						<input type="text" class="form-control" id="recipient-name" name="category">
+					</div>
+
+					<div class="form-group modal-footer">
+						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	</div>
+
+
+<!-- Edit modal -->
+
+	<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Update User</h5>
+				</div>
+				<div class="modal-body">
+					<form th:action="@{/users/update}" method="put">
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<label>ID:</label>
+								<input type="text" class="form-control" id="idEdit" name="id" readonly>
+							</div>
+
+							<div class="form-group col-sm-6">
+								<label>AVATAR:</label>
+								<div class="form-control">
+									<input type="file" class="form-control-file" id="photoEdit" name="photo" placeholder="Select File" accept="image/*">
+								</div>
+							</div>
+						</div>
+			
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<label>USERNAME:</label>
+								<input type="text" class="form-control" id="usernameEdit" name="username" readonly>
+
+							</div>
+							<div class="form-group col-sm-6">
+								<label>Mật khẩu:</label>
+								<input type="password" class="form-control" id="passwordEdit" name="password" onfocus="this.value=''"
+								required="required" pattern=".{6,}">
+							</div>
+						</div>
+			
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<label>FIRSTNAME:</label>
+								<input type="text" class="form-control" id="firstnameEdit" name="firstname">
+							</div>
+							<div class="form-group col-sm-6">
+								<label>LASTNAME:</label>
+								<input type="text" class="form-control" id="lastnameEdit" name="lastname">
+							</div>
+						</div>
+			
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<label>ROLE:</label>
+								<div class="form-group">
+									<select class="form-control" id="rolesEdit" name="roles">
+										<option>ADMIN</option>
+										<option>USER</option>
+									</select>				    
+								</div>
+							</div>
+			
+							<div class="form-group col-sm-6">
+								<label>ENABLED:</label>
+								<div class="form-group">
+									<select class="form-control" id="enabledEdit" name="enabled">
+										<option value="true">ACTIVE</option>
+										<option value="false">INACTIVE</option>
+									</select>				    
+								</div>
+							</div>
+						</div>
+
+						<input type="text" id="imageEdit" name="image" hidden>
+						<div class="form-group modal-footer">
+							<button type="submit" class="btn btn-primary">Update</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="editPTModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Update Product Type</h5>
+			</div>
+			<div class="modal-body">
+				<form th:action="@{/producttypes/update}" method="put">
+					<div class="form-group">
+						<label for="recipient-name" class="col-form-label">Id:</label>
+						<input type="text" class="form-control" id="idPTEdit" name="id" readonly>
+					</div>
+
+					<div class="form-group">
+						<label for="recipient-name" class="col-form-label">Loại sản phẩm:</label>
+						<input type="text" class="form-control" id="productTypeEdit" name="type">
+					</div>
+
+					<div class="form-group">
+						<label for="recipient-name" class="col-form-label">Thể loại:</label>
+						<input type="text" class="form-control" id="categoryEdit" name="category">
+					</div>
+
+					<div class="form-group modal-footer">
+						<button type="submit" class="btn btn-primary">Update</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
+				</div>
+				<div class="modal-body">
+					<form  th:action="@{/products/update}" method="put">
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<label>ID:</label>
+								<input id="idProduct" name="id" class="form-control" readonly="true" placeholder="Auto Number" />
+							</div>
+			
+							<div class="form-group col-sm-6">
+								<label>Giảm giá:</label>
+								<input id="discountProduct" name="discount" class="form-control" type="number"
+									required="required" min="0" oninput="validity.valid||(value='');"
+									step="0.05" />
+							</div>
+						</div>
+			
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<label>Tên sản phẩm:</label>
+								<input id="booknameProduct" name="bookname" class="form-control" required="required"
+									pattern=".{6,}" title="Tên sản phẩm phải từ 6 ký tự trở lên" />
+							</div>
+							<div class="form-group col-sm-6">
+								<label>Đơn giá:</label>
+								<input id="priceProduct" name="price" class="form-control" type="number"
+									required="required" min="0" />
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<label>Số lượng:</label>
+								<input id="quantityProduct" name="quantity" class="form-control" type="number"
+									required="required" min="0" />
+							</div>
+							<div class="form-group col-sm-6">
+								<label>Loại:</label>
+								<!-- <input type="text"  id="typeProduct" name="producttypeid"> -->
+								<select class="form-control" name="producttypeid" required="required" id="typeProduct">
+									<option th:each="producttype : ${producttypes}"
+											th:value="${producttype.id}"
+											th:text="${producttype.category}">
+									</option>
+								</select>	
+							</div>
+						</div>
+			
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<label>Ngày thêm:</label>
+								<input type="date" id="dateProduct" name="date" class="form-control" />
+							</div>
+							<div class="form-group col-sm-6">
+								<label>Số lượng xem sản phẩm:</label>
+								<input name="count" class="form-control" readonly="true" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6 form-group">
+								<label>Đặc biệt:</label>
+								<div class="form-group">
+									<select class="form-control" id="availableProduct" name="available">
+										<option value="true" style="color: green;">Hiện sản phẩm</option>
+										<option value="false" style="color: red;">Ẩn sản phẩm</option>
+									</select>				    
+								</div>
+							</div>
+			
+							<div class="col-sm-6 form-group">
+								<label>Tình trạng hàng:</label>
+								<div class="form-group">
+									<select class="form-control" id="specialProduct" name="special">
+										<option value="true" style="color: green;">Còn hàng</option>
+										<option value="false" style="color: red;">Hết hàng</option>
+									</select>				    
+								</div>
+							</div>
+						</div>
+			
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<label>Tác giả:</label> 
+								<input id="authorProduct" name="author" class="form-control"
+									pattern=".{3,}" title="Tên tác giả phải từ 3 ký tự trở lên" />
+							</div>
+			
+							<div class="form-group col-sm-6">
+								<label>Hình ảnh:</label> 
+								<input type="file" name="image" class="form-control" />
+								<input type="text" id="imageProduct" name="photo" hidden>
+							</div>
+						</div>
+			
+						<div class="row">
+							<div class="form-group col-sm-12">
+								<label>Mô tả:</label>
+								<textarea id="descriptionProduct" name="description" class="form-control"></textarea>
+							</div>
+			
+							<div class="form-group col-sm-12">
+								<button type="submit" class="btn btn-primary">Submit</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<!-- javascripts -->
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+
+	<!-- nice scroll -->
+	<script src="js/jquery.scrollTo.min.js"></script>
+	<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+
+	<!--custome script for all page-->
+	<script src="js/scripts.js"></script>
+	<script src="js/user.js"></script>
+	<script src="js/country.js"></script>
+	<script src="js/producttype.js"></script>
+	<script src="js/product.js"></script>
+
+	<!-- javascripts table -->
+	<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap.min.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+		
+</body>
+</html>
