@@ -3,10 +3,13 @@ package com.tutorial.fleetapp.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +38,17 @@ public class ProductController {
 		return "user/body/product/list";
 	}
 	
-	
+	@RequestMapping("/detail") //get link href
+	public String detail(Model model, 	@PathParam("id") Integer id) {
+		
+		Optional<Product> product1 = productService.findById(id);
+		Product product = product1.get();
+		model.addAttribute("product",product);
+
+		List<ProductType> productTypeList = productTypeService.getProductType();
+		model.addAttribute("producttypes", productTypeList);
+		return "user/body/product/detail"; // get link fe
+	}
 	
 	
 	

@@ -119,7 +119,7 @@
 			<th:foreach th:each="product:${products}">
 				<div class="card-group" style="padding-top: 25px; padding-left: 15px; justify-content: center;">
 					<div class="card" style="width: 27rem;">
-						<a href="/product/detail/${p.id}" class="caption-picture">
+						<a th:href="@{/detail?id=}+${product.id}" class="caption-picture">
 							<div class="discount">
 								<div th:switch=${product.discount}>
 									<p th:case="0"

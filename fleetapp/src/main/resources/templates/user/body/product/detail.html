@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -48,28 +48,25 @@
 </head>
 <body>
 
-<c:set var="cart" value="${sessionScope['scopedTarget.cartService']}" />
-<br />
-<div class="row">
+<div class="row" th:object="${product}">
 	<div class="col-sm-9">
 		<div class="ct1">
 			<!-- SHOP PRODUCTS -->
 			<div class="row">
 				<div class="col-sm-5">
-
 					<div class="product-image">
-						<img src="/static/images/products/${prod.image}"
-							title="${prod.name}">
+						<img class="card-img-top" th:src="@{'/img/product/' + ${product.image}}" title="${product.image} ảnh bìa"> 
 					</div>
 				</div>
 				<div class="col-sm-7">
 					<div class="san-pham-ct">
 						<h3 style="color: black; font-weight: bold; text-align: left;">
-							${prod.name}</h3>
-						<p>
-							Thương hiệu: <b>${prod.category.nameVN}</b> | SKU: ${prod.id}
-						</p>
-						<br /> <a href="/product/detail/${prod.id}"> <c:choose>
+							<p><span th:text="${product.bookname}"/></p></h3>
+						<p> <span th:text=" 'Thương hiệu: ' + ${product.producttype.category}+ ' | '+'SKU:'+ ${product.id}  "></span></p>
+						<br /> 
+						
+						<a th:href="@{'/product/detail/' + ${product.id} }">
+						 <c:choose>
 								<c:when test="${prod.discount > 0 }">
 									<p
 										style="background-color: red; width: 30px; height: 30px; text-align: right; float: right; position: relative; border-radius: 30px; margin-right: 110px">
@@ -83,8 +80,6 @@
 
 								</c:otherwise>
 							</c:choose>
-
-
 						</a>
 						<p style="padding: 3px; font-size: 20px; font-weight: bold;">
 							<c:choose>
@@ -113,19 +108,23 @@
 
 								</c:otherwise>
 							</c:choose>
-						</p>
-						<p>
-							Tình trạng: <span
-								style="background-color: #99FF99; border-radius: 4px; padding: 3px; color: black; font-weight: bold;">${prod.available?'Còn hàng':'Hết hàng'}</span>
-						</p>
+						</p> 
+						
+					
+						
+						
+						<div class="row">
+							Tình trạng: 
+							<div th:switch="${product.special}" style=" border-radius: 4px; padding: 3px; color: black; font-weight: bold;">
+									<p th:case="true" style="background-color: #99FF99; color: green; font-weight: bolder;">Còn hàng</p>
+									<p th:case="false" style="background-color: #99FF99; color: red; font-weight: bolder;">Hết hàng</p>
+							</div>
+						</div>
 
 						<div class="row">
-							<div class="col-sm-6" data-id="${prod.id}">
-								<button class="theo-vao-gio btn-add-to-carts"
-									data-toggle="modal" data-target="#myModals">THÊM VÀO GIỎ
-								</button>
+							<div class="col-sm-6" data-id="${product.id}">
+								<button class="theo-vao-gio btn-add-to-carts" data-toggle="modal" data-target="#myModals">THÊM VÀO YÊU THÍCH</button>
 							</div>
-
 						</div>
 
 					</div>
@@ -133,22 +132,19 @@
 					<div class="sp-km">
 						<h6>Khuyến mãi liên quan</h6>
 						<p>
-							<img style="margin-top: -5px"
-								src="/static/images/icon/icon_km.png" width="15px" height="15px">
+							<img style="margin-top: -5px" th:src="@{'/img/icons/icon_km.png'}" width="15px" height="15px">
 							<span>Giảm ngay 100K khi mua đơn hàng trên 500k</span>
 						</p>
 						<p>
-							<img style="margin-top: -5px"
-								src="/static/images/icon/icon_km.png" width="15px" height="15px">
+							<img style="margin-top: -5px" th:src="@{'/img/icons/icon_km.png'}" width="15px" height="15px">
 							<span>Ngày 11-11 tưng bừng đón sale</span>
-						</p>
+						</p> 
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="sp-km">
-			<p>${prod.description}</p>
-
+			<p th:text="${product.description}" title="${product.description} mô tả"></p>
 		</div>
 	</div>
 
@@ -177,22 +173,13 @@
 </div>
 <!-- /content -->
 <br>
-
+<!-- Bình luận -->
 Bình luận: <br/>
 <div id="comments-container">
   <section id="comment--new" class="comment">
     <div class="avatar comment__avatar" >
         <span class="user">
-         		<c:choose>
-					<c:when test="${empty sessionScope.user }">
-							<img src="/static/images/default.png"
-							style="width: 50px; height: 50px;" /> 
-					</c:when>
-					<c:otherwise>
-							<img src="/static/images/default.png"
-							style="width: 50px; height: 50px; border-radius: 50%" /> 							
-					</c:otherwise>
-				</c:choose>
+			<img th:src="@{'/img/photos/default.png' + ${#authentication.getPrincipal().getPhoto()}}" style="width: 50px; height: 50px;" /> 
         </span>
     </div>
     
@@ -203,11 +190,6 @@ Bình luận: <br/>
 	    <input type="submit" value="Submit" class="btn btn-success btn-lg float-right" />      
     </form:form> 						
 
- 	
-    
-    
-    
-    
   </section>
   <ul id="comments">
    <c:forEach var="comment" items="${comments}" begin="0" end="4">
@@ -219,7 +201,6 @@ Bình luận: <br/>
         </a>
       </div>
       
-     
       <div class="comment__content">
         <header>
           <a href="#">
