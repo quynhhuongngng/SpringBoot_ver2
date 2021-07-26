@@ -1,8 +1,13 @@
 package com.tutorial.fleetapp.models;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 
 
 import lombok.AllArgsConstructor;
@@ -24,6 +29,19 @@ public class User {
 	private String roles;
 	private boolean enabled;
 	private String photo;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	List<Comment> comments;
+	
+	
+	
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
 	public int getId() {
 		return id;

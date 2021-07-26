@@ -1,0 +1,188 @@
+/*=== Import Raleway fonts ===*/
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,700);
+
+body,
+html {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background: #e0e7e6;
+}
+@media (min-width: 576px) {
+  .form-inline label {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin-bottom: 0;
+  }
+}
+
+#content {
+  margin: 10px auto;
+  background: #f7f7f1;
+  height: 200px;
+  width: 70%;
+  /*border-radius*/
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.discount-label {
+  padding: 6px;
+  position: relative;
+  float: left;
+  margin-top: 5px;
+  margin-left: 5px;
+  width: auto;
+  -webkit-border-radius: 0 4px 0 4px;
+  -moz-border-radius: 0 4px 0 4px;
+  border-radius: 0 4px 4px 0;
+}
+
+.discount-label:after {
+  right: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  border-color: rgba(136, 183, 213, 0);
+
+  border-width: 20px;
+  top: 50%;
+  margin-top: -20px;
+}
+
+.discount-label:before {
+  content: "";
+  z-index: 2;
+  position: absolute;
+  top: 42%;
+  right: 100%;
+  width: 7px;
+  height: 7px;
+  opacity: 0.95;
+  background: #ffffff;
+  border-radius: 7px;
+  -webkit-box-shadow: inset 0.5px 0 rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0.5px 0 rgba(0, 0, 0, 0.6);
+}
+
+.discount-label span {
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  font-family: "Raleway", Helvetica;
+}
+
+.red {
+  background-color: #e80707;
+}
+
+.red:after {
+  border-right-color: #e80707;
+}
+
+.blue {
+  background-color: #1883db;
+}
+.blue:after {
+  border-right-color: #1883db;
+}
+
+.green {
+  background-color: #16b516;
+}
+
+.green:after {
+  border-right-color: #16b516;
+}
+
+.yellow {
+  background-color: #feaa00;
+}
+
+.yellow:after {
+  border-right-color: #feaa00;
+}
+
+.gray {
+  background-color: #737373;
+}
+
+.gray:after {
+  border-right-color: #737373;
+}
+
+.black {
+  background-color: #000;
+}
+
+.black:after {
+  border-right-color: #000;
+}
+.card:hover {
+  -webkit-box-shadow: 1px 1px 40px 1px red;
+  -moz-box-shadow: 1px 1px 40px 1px red;
+  box-shadow: 1px 1px 40px 1px red;
+}
+
+.caption-picture {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: stretch;
+}
+
+.discount {
+  padding-left: 230px;
+}
+
+.card-img-top {
+  width: 55%;
+  height: 100%;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: stretch;
+}
+
+.caption-price {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.book-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  color: #44e2ff;
+  text-transform: uppercase;
+}
+
+.d-flex {
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+.justify-content-center {
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+}

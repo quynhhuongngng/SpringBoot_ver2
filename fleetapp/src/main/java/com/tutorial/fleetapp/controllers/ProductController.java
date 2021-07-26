@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import  com.tutorial.fleetapp.models.Comment;
 import com.tutorial.fleetapp.models.Product;
 import com.tutorial.fleetapp.models.ProductType;
 import com.tutorial.fleetapp.services.ProductService;
@@ -44,7 +46,11 @@ public class ProductController {
 		Optional<Product> product1 = productService.findById(id);
 		Product product = product1.get();
 		model.addAttribute("product",product);
-
+		
+		Comment entity = new Comment();
+		model.addAttribute("comments", product.getComments());
+		model.addAttribute("entity", entity);
+		
 		List<ProductType> productTypeList = productTypeService.getProductType();
 		model.addAttribute("producttypes", productTypeList);
 		return "user/body/product/detail"; // get link fe
