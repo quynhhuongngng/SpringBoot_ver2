@@ -1,9 +1,9 @@
 package com.tutorial.fleetapp.models;
-import java.util.Date;
-import java.util.List;
 
+
+import java.util.List;
+import java.util.Date;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -49,23 +49,13 @@ public class Product {
     @JoinColumn(name = "producttypeid", insertable = false, updatable = false)
     private ProductType producttype;
     private Integer producttypeid;
-    
-    
+
     private Boolean special;
-    
+
     @OneToMany(mappedBy = "product")
     private List<Comment> comments;
-    
-    
-    public List<Comment> getComments() {
-		return comments;
-	}
 
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
-	public Integer getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -175,6 +165,14 @@ public class Product {
 
     public void setSpecial(Boolean special) {
         this.special = special;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
 }

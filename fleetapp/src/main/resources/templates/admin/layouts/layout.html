@@ -40,6 +40,7 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap.min.css" rel=" stylesheet">
 
+
 </head>
 
 <body>
@@ -301,8 +302,7 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="editPTModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-	aria-hidden="true">
+	<div class="modal fade" id="editPTModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -338,7 +338,7 @@
 	</div>
 
 	<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-		<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
@@ -469,15 +469,19 @@
 	<script src="js/country.js"></script>
 	<script src="js/producttype.js"></script>
 	<script src="js/product.js"></script>
-
 	<!-- javascripts table -->
 	<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap.min.js"></script>
+	<script th:src="@{//cdn.ckeditor.com/4.16.1/full/ckeditor.js}"></script>
 
 	<script>
 		$(document).ready(function() {
 			$('#example').DataTable();
 		} );
+	</script>
+
+	<script>
+			CKEDITOR.replace( 'description');
 	</script>
 		
 </body>

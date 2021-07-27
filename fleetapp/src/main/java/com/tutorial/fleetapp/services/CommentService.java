@@ -21,7 +21,7 @@ public class CommentService {
 
     // SAve new state
     public void save(Comment comment) {
-    	commentRepository.save(comment);
+        commentRepository.save(comment);
     }
 
     // get by id
@@ -30,6 +30,6 @@ public class CommentService {
     }
 
     public void delete(Integer id) {
-    	commentRepository.deleteById(id);
+        commentRepository.deleteById(id);
     }
 }

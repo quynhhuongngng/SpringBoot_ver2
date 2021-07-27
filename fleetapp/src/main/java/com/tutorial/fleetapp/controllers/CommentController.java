@@ -37,28 +37,27 @@ public class CommentController {
 	private UserService userService;
 	
 	
-
-	@RequestMapping("addCommentProduct/{id}")
-	public String comment(@ModelAttribute("entity") Comment entity, @PathVariable("id") Integer id) {
-		
+	@PostMapping("product/addCommentProduct/{id}")
+		public String Comment(Comment comment, @PathVariable("id") Integer id)  {
 //		User user = (User) session.getAttribute("user");
-		Optional<User> user1 = userService.findById(id);
-		User user = user1.get();
+		// Optional<User> user1 = userService.findById(id);
+		// User user = user1.get();
 		
 		Optional<Product> product1 = productService.findById(id);
 		Product product = product1.get();
-		if (user == null) {
-			return "redirect:/users";
-		} 
-		else {
-			entity.setUser(user);
-			entity.setProduct(product);
-			entity.setCommentedDate(new Date());
+		// if (user == null) {
+		// 	return "redirect:/users";
+		// } 
+		// else {
+			// comment.setUser(user);
+			comment.setProductId(id);
+			// comment.setUserId(userId);
+			comment.setCommentedDate(new Date());
 			
-			System.out.println("");
-			commentService.save(entity);
-			return "redirect:/product/detail/{id}";
-		}
+			System.out.println("Hello world");
+			commentService.save(comment);
+			return "redirect:/product/detail?id={id}";
+		// }
 	}
 
 }

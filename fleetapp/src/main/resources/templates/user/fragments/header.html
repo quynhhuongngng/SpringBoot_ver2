@@ -48,11 +48,8 @@
 
 							<li class="dropdown"><a data-toggle="dropdown"
 								class="dropdown-toggle" href="#" style="padding: 5px 5px;">
-									<img alt=""
-									th:src="@{'/img/photos/' + ${#authentication.getPrincipal().getPhoto()}}"
-									height="38" width="38" style="border-radius: 50%; padding: 0;">
-									<span class="username"
-									th:text="${#authentication.getPrincipal().getUsername()}">Guest</span>
+									<img alt="" th:src="@{'/img/photos/' + ${#authentication.getPrincipal().getPhoto()}}" height="38" width="38" style="border-radius: 50%; padding: 0;">
+									<span class="username" th:text="${#authentication.getPrincipal().getUsername()}">Guest</span>
 									<b class="caret"></b>
 							</a>
 								<ul class="dropdown-menu extended logout">

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{user/layouts/layout}"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<body>
+	<th:block layout:fragment="content">
+		<!-- <div th:fragment="sub-content"> -->
+		<div class="container" style="margin-top:30px;">
+			<h3 class="title">
+				<b> 
+					<span th:text="${products.size()} +' sản phẩm'"></span> 
+				</b>
+			</h3>
+			<div th:fragment="sub-content">
+				<div class="row" style="margin: 0px 0px 30px 0px;"> 
+					<th:block th:each="product:${products}">
+						<div class="col-sm-3" style="margin-top: 30px;">
+							<div class="card-group">
+								<div class="card ">
+										<!-- Top của card -->
+										<a th:href="@{/product/detail?id=}+${product.id}" class="caption-picture">
+											<div class="discount" th:with="condition=${product.discount}" >
+												<!-- IF -->
+												<div th:if="${condition}">
+													<div class="discount-label green"> <span th:text="${#numbers.formatInteger(product.discount*100,2)} + '%'"></span> </div>
+												</div>
+												<!-- ELSE -->
+												<div th:unless="${condition}">
+													<div class="discount-label "><span style="color: whitesmoke;">0</span></div>
+												</div>
+											</div> 
+											<img class="card-img-top" th:src="@{'/img/product/' + ${product.image}}" title="something">
+										</a>
+										<!-- Body của card -->
+										<div class="card-body">
+											<div class="caption-price">
+												<p style="padding: 3px; text-align: center; color: black;" class="book-name" th:text="${product.bookname}"></p>
+												<div th:with="condition=${product.discount}" class="d-flex justify-content-center">
+													<!-- IF CUSTOMER IS ANONYMOUS -->
+													<div th:if="${condition}" >
+														<span style="text-decoration: line-through; color: Gray; font-weight: bold;" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}+' VNĐ'"></span>
+														<span style="text-align: left; font-weight: bold; color: #db3208;" th:text="${#numbers.formatDecimal(product.price * (1 - product.discount), 0, 'COMMA', 2, 'POINT')}+' VNĐ'"></span>
+													</div>
+													<!-- ELSE -->
+													<div th:unless="${condition}">
+														<span style="text-align: left; font-weight: bold; color: #db3208;" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}+' VNĐ'"></span>
+													</div>
+												</div>
+											</div>
+											<br>
+											<div data-id="${product.id}" class="caption-button">
+												<button class="btn btn-sm btn-danger btn-add-to-cart">
+													<i class="glyphicon glyphicon-shopping-cart"></i>
+												</button>
+			
+												<button class="btn btn-sm btn-warning btn-star">
+													<i class="glyphicon glyphicon-star"></i>
+												</button>
+			
+												<button class="btn btn-sm btn-success btn-open-dialog"
+													data-toggle="modal" data-target="#myModal">
+													<i class="glyphicon glyphicon-envelope"></i>
+												</button>
+											</div>
+											<br>
+										</div>
+									</div>
+							</div>
+						</div>
+					</th:block>
+				</div>
+			</div>
+		</div>
+	<!-- </div> -->
+
+</th:block>
+</body>
+</html>

@@ -147,10 +147,13 @@ html {
 .discount {
   padding-left: 230px;
 }
-
+.card {
+  width: auto;
+  background-color: whitesmoke;
+}
 .card-img-top {
-  width: 55%;
-  height: 100%;
+  width: 75%;
+  height: 200px;
 }
 
 .card-body {
@@ -186,3 +189,4 @@ html {
   -ms-flex-pack: center !important;
   justify-content: center !important;
 }
+
