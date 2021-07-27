@@ -10,10 +10,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.tutorial.fleetapp.models.Comment;
+import com.tutorial.fleetapp.models.Product;
+import com.tutorial.fleetapp.models.ProductType;
 import com.tutorial.fleetapp.models.User;
 import com.tutorial.fleetapp.services.UserService;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Optional;
+
+import javax.websocket.server.PathParam;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -28,9 +35,19 @@ public class UserController {
 		model.addAttribute("users", userlist);
 		return "/admin/body/User";
 	}
+	
+	@RequestMapping("/users/profile")
+	public String getProfileHeader(Model model,@PathParam("id") Integer id) {
+
+		Optional<User> profile1 = userService.findById(id);
+		//Trả về object user
+		User profile = profile1.get();
+		model.addAttribute("profile",profile);
+
+		return "/user/body/account/Profile";
+	}
 
 	@RequestMapping("users/findById")
-
 	@ResponseBody
 	public Optional<User> findById(int id) {
 		return userService.findById(id);
@@ -87,10 +104,12 @@ public class UserController {
 			userService.save(user);
 			return "redirect:/users";
 		}
+		
 		userService.save(user);
 		redir.addFlashAttribute("message", "Cập nhật thành công!!!");
 		return "redirect:/users";
 	}
+	
 
 	@RequestMapping(value = "/users/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
 	public String delete(Integer id) {
