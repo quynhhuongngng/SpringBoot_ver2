@@ -1,11 +1,20 @@
 package com.tutorial.fleetapp.controllers;
 
+import java.security.Principal;
+import java.util.Base64;
 import java.util.List;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +28,7 @@ import com.tutorial.fleetapp.services.UserService;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,23 +38,80 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
+	
+	@Autowired
+	HttpSession session;
+	
 
+	
+	
+	//USER
+	/*Thay đổi mật khẩu user */
+	@PostMapping("/account/change")
+	public String change(Model model, RedirectAttributes redir,
+			@RequestParam("id") Integer id, 
+			@RequestParam("password") String pw,
+			@RequestParam("newpassword") String pw1, 
+			@RequestParam("confirmPassword") String pw2) {
+		
+		PasswordEncoder passencoder = new BCryptPasswordEncoder();
+		
+		Optional<User> user1 = userService.findById(id);
+		User user = user1.get();
+		
+		if (!pw1.equals(pw2)) {
+			redir.addFlashAttribute("message", "Xác nhận mật khẩu không trùng khớp!");
+		} 
+		else {			
+			if (user == null) {
+				redir.addFlashAttribute("message", "Sai tài khoản!!!");
+			} else if (!passencoder.matches(pw,user.getPassword())) {
+				redir.addFlashAttribute("message", "Mật khẩu hiện tại không đúng!");
+			} else {
+				user.setPassword(pw1);
+				userService.save(user);
+				redir.addFlashAttribute("message", "Thay đổi mật khẩu thành công!");
+			}
+		}
+		
+		return "redirect:/users/profile";
+	}
+	
+	@RequestMapping("/users/profile")
+	public String getProfileHeader(Model model,Principal principal) {
+		//Get the User in a Controller
+		User profile = userService.findByUsername(principal.getName());
+		
+		model.addAttribute("profile",profile);
+
+		return "/user/body/account/Profile";
+	}
+	
+//	@RequestMapping("/users/profile")
+//	public String getProfileHeader(Model model) {
+//		//Get the User in a Controller
+//		
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+//		    String currentUserName = authentication.getName();
+//		    return currentUserName;
+//		}
+//		
+//
+//		return "/user/body/account/Profile";
+//	}
+	
+	
+	//ADMIN
+	
 	@GetMapping("/users")
 	public String getUsers(Model model) {
 		List<User> userlist = userService.getUsers();
 		model.addAttribute("users", userlist);
 		return "/admin/body/User";
-	}
-	
-	@RequestMapping("/users/profile")
-	public String getProfileHeader(Model model,@PathParam("id") Integer id) {
-
-		Optional<User> profile1 = userService.findById(id);
-		//Trả về object user
-		User profile = profile1.get();
-		model.addAttribute("profile",profile);
-
-		return "/user/body/account/Profile";
 	}
 
 	@RequestMapping("users/findById")
@@ -110,7 +177,6 @@ public class UserController {
 		return "redirect:/users";
 	}
 	
-
 	@RequestMapping(value = "/users/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
 	public String delete(Integer id) {
 		userService.delete(id);

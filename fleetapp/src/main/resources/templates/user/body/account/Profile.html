@@ -19,9 +19,9 @@
 				<ul class="nav nav-tabs">
 					<li class="active"><a data-toggle="tab" href="#tab1">Hồ sơ cá nhân</a></li>
 					<li><a data-toggle="tab" href="#tab2">Thay đổi mật khẩu </a></li>
-
+					<span th:utext="${message}"></span> 
 				</ul>
-
+			<!-- TAB THÔNG TIN CÁ NHÂN -->
 				<div class="tab-content">
 					<div id="tab1" class="tab-pane fade in active">
 						<div class="row">
@@ -115,13 +115,14 @@
 					</div>
 				</div>
 					</div>
-
+		<!--TAB THAY ĐỔI MẬT KHẨU -->
 					<div id="tab2" class="tab-pane fade">
 						<div class="row">
 					<div class="col-sm-12">
 						<div class="panel panel-default">
 							<div class="panel-heading resume-heading">
-								<div class="row" >
+								<div class="row" th:object="${profile}">
+									
 									<div class="col-lg-12">
 										<div class="col-xs-12 col-sm-4">
 											<figure>
@@ -165,19 +166,20 @@
 											</div>
 										</div>
 										<div class="col-xs-12 col-sm-6">
-											<form th:action="@{/users/update}" method="put">
+										
+											<form th:action="@{/account/change}" method="post" >
 											<ul class="list-group">
 												<li class="list-group-item"><span class="col-sm-6">
 													<i class="fas fa-address-card"></i> Mật khẩu: </span> 
 													<input type="password" class="col-sm-6" name="password" onfocus="this.value=''"
-													required="required" pattern=".{6,}" placeholder="Password">
-													
+													required="required" pattern=".{6,}" placeholder="Password" >
+													<input class="col-sm-6" name="id" th:value="${profile.id}" hidden="hidden" readonly="readonly"></input>
 												</li>
 
 												<li class="list-group-item"><span class="col-sm-6">
 														<i class="fa fa-address-card" aria-hidden="true"></i> Mật khẩu mới: </span> 
 														<input type="password" class="col-sm-6" name="newpassword" onfocus="this.value=''"
-													required="required" pattern=".{6,}" placeholder="New Password">
+													required="required" pattern=".{6,}" placeholder="New Password" >
 												</li>
 
 												<li class="list-group-item"><span class="col-sm-6">

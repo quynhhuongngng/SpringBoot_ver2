@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<!-- xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" -->>
 <head>
 <!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
@@ -7,6 +8,7 @@
 
 </head>
 <body>
+<!-- <div sec:authorize="isAuthenticated()"> Authenticated as <span sec:authentication="name"></span></div> -->
 	<div th:fragment="header">
 		<header class="header">
 			<div class="">
@@ -55,7 +57,8 @@
 									<ul class="dropdown-menu extended logout">
 										<span class="log-arrow-up"></span>
 										<li class="eborder-top">
-											<a th:href="@{/users/profile?id=}+${#authentication.getPrincipal().getId()}">
+											<a th:href="@{/users/profile}">
+													<input type="text" th:value="${#authentication.getPrincipal().getId()}" name="id" hidden="hidden">
 													<i class="icon_profile"></i> My Profile
 											</a>
 										</li>

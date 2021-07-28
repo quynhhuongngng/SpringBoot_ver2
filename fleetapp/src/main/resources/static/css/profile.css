@@ -462,15 +462,20 @@ form .form-group {
 .list-group-item {
   font-size: 18px;
   border: none;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   background-color: transparent;
+  border-top: 1px solid purple;
+
 }
 .list-group-item span {
   font-weight: bold;
 }
 .list-group-item input {
-	background-color: #F5F5F5;
+	background-color: transparent;
+  font-style: italic;
 }
+
+
 /*makes an anchor inactive(not clickable)*/
 .inactive-link {
   pointer-events: none;

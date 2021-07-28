@@ -35,10 +35,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").permitAll()
 
 				.and()
+				.headers().xssProtection();
+				
 				/*
 				 * .formLogin().permitAll() .and() .logout().permitAll() .and()
 				 */
-				.exceptionHandling().accessDeniedPage("/403");
+//				.exceptionHandling().accessDeniedPage("/403");
 	}
 
 	@Bean
