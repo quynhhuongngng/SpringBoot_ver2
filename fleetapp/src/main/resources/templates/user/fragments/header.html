@@ -29,7 +29,7 @@
 							<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="">Book Store</a>
+						<a class="navbar-brand" href="/">Book Store</a>
 					</div>
 
 					<div class="collapse navbar-collapse" id="myNavbar">
@@ -39,8 +39,8 @@
 									<input class="form-control" placeholder="Search" type="text">
 								</form>
 							</li>
-							<li class="active"><a href="">Home</a></li>
-							<li class="dropdown"><a href="#">Products</a></li>
+							<li class="active"><a href="/">Home</a></li>
+							<li class="dropdown"><a href="/productlist">Products</a></li>
 							<li><a href="#">Deals</a></li>
 							<li><a href="#">Stores</a></li>
 							<li><a href="#">Contact</a></li>
@@ -51,7 +51,7 @@
 							<li class="dropdown">
 								<a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding: 5px 5px;">
 										<img alt="" th:src="@{'/img/photos/' + ${#authentication.getPrincipal().getPhoto()}}" height="38" width="38" style="border-radius: 50%; padding: 0;">
-										<span class="username" th:text="${#authentication.getPrincipal().getUsername()}">Guest</span>
+										<span class="username" th:text="${#authentication.getPrincipal().getName()}">Guest</span>
 										<b class="caret"></b>
 								</a>
 									<ul class="dropdown-menu extended logout">

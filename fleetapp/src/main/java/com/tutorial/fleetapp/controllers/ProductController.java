@@ -39,7 +39,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductTypeService productTypeService;
-
+	
+	
+	//USER
 	@GetMapping("/productlist")
 	public String getProductView(Model model) {
 		List<Product> productList = productService.getProduct();
@@ -50,7 +52,6 @@ public class ProductController {
 		return "user/body/product/Product_list";
 	}
 
-	
 	@RequestMapping("product/detail")
 	public String getProductDetail(Model model,@PathParam("id") Integer id) {
 
@@ -78,7 +79,11 @@ public class ProductController {
 		return "user/body/product/Product_Detail";
 	}
 	
-
+	
+	
+	
+	
+	//ADMIN
 	// Get All Countrys
 	@GetMapping("/products")
 	public String getProduct(Model model) {

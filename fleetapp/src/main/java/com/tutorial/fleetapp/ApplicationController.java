@@ -21,7 +21,7 @@ public class ApplicationController {
 	private ProductTypeService productTypeService;
 	
 	@GetMapping("/")
-	public String goHome(Model model) {
+	public String goHome(Model model ) {
 		List<Product> productList = productService.getProduct();
 		model.addAttribute("products", productList);
 

@@ -18,6 +18,11 @@ public class UserPrincipal implements UserDetails {
 		// TODO Auto-generated method stub
 		return user.getPhoto();
 	}
+	
+	public String getName() {
+		// TODO Auto-generated method stub
+		return user.getFirstname()+" "+user.getLastname();
+	}
 
 	public int getId() {
 		// TODO Auto-generated method stub
