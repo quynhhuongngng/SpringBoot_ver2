@@ -33,7 +33,7 @@
 										<form th:action="@{/acount/edit}" method="post" enctype="multipart/form-data">
 										<div class="col-xs-12 col-sm-4">
 											<figure>
-												<img class="img-circle img-responsive" alt="avatar" th:src="@{'/static/img/photos/' + ${#authentication.getPrincipal().getPhoto()}}">
+												<img width=300px; height=300px; class="img-circle" alt="avatar" th:src="@{'/img/photos/' + ${profile.getPhoto()}}">
 												<input type="file" name="photo_upload"/>
 											</figure>
 										

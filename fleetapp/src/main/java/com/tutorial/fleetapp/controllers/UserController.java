@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
-
+import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
@@ -58,18 +60,25 @@ public class UserController {
 	@PostMapping("/acount/edit")
 	public String editProfile(Model model, RedirectAttributes redir, Principal principal, 
 			@RequestParam("firstname") String fname, @RequestParam("lastname") String lname,
-			@RequestParam("photo_upload") MultipartFile file)throws IllegalStateException, IOException {
+			@RequestParam("photo_upload") MultipartFile file)throws IllegalStateException, IOException{
 		User profile = userService.findByUsername(principal.getName());
 		
 		profile.setFirstname(fname);
 		profile.setLastname(lname);
 		
+		
 		if(!file.isEmpty()) {
-			String dir = app.getRealPath("static/img/photos");
-			File f = new File(dir, file.getOriginalFilename());
+			String realPath = ResourceUtils.getURL("classpath:").getPath() + "static"+"/img/photos";
+			File f = new File(realPath, file.getOriginalFilename());
 			file.transferTo(f);
 			profile.setPhoto(f.getName());
 		}
+		
+//		if(!file.isEmpty()) {
+//			profile.setPhoto(file.getOriginalFilename());
+//			String path = app.getRealPath("/static/img/photos"+profile.getPhoto());
+//			file.transferTo(new File(path));
+//		}
 		
 		userService.save(profile);
 		redir.addFlashAttribute("message", "Xác nhận đã thay đổi thông tin!");
