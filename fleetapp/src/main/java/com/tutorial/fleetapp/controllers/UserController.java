@@ -152,29 +152,14 @@ public class UserController {
 			redir.addFlashAttribute("message", "Mật khẩu không trùng khớp!!!");
 			return "redirect:/users";
 		}
-//		if(!file.isEmpty()) {
-//			String realPath = ResourceUtils.getURL("classpath:").getPath() + "static"+"/img/photos";
-//			File f = new File(realPath, file.getOriginalFilename());
-//			file.transferTo(f);
-//			user.setPhoto(f.getName());
-//		}else {
-//			user.setPhoto("user.jpg");
-//		}
-		
-		if (file.isEmpty()) {
-			user.setPhoto("user.png");
-		} else {
-			user.setPhoto(file.getOriginalFilename());
-			String path = app.getRealPath("/static/img/photos/" + user.getPhoto());
-			file.transferTo(new File(path));
+		if(!file.isEmpty()) {
+			String realPath = ResourceUtils.getURL("classpath:").getPath() + "static"+"/img/photos";
+			File f = new File(realPath, file.getOriginalFilename());
+			file.transferTo(f);
+			user.setPhoto(f.getName());
+		}else {
+			user.setPhoto("user.jpg");
 		}
-		
-		
-		
-		
-		
-		
-		
 		
 		redir.addFlashAttribute("message", "Tạo tài khoản thành công!!!");
 		userService.save(user);

@@ -42,7 +42,7 @@
 								</form>
 							</li>
 							<li><a href="/">Home</a></li>
-							<li><a href="/productlist">Products</a></li>
+							<li><a th:href="@{/productlist}">Products</a></li>
 
 
 							<li id="alert_notificatoin_bar" class="dropdown">
@@ -68,13 +68,13 @@
 						</ul>
 						
 						<ul class="nav navbar-nav navbar-right">
-							<li class="dropdown">
+							<li class="dropdown" th:object="${profile}">
 								<a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding: 5px 5px;">
 										<img alt="" th:src="@{'/img/photos/' + ${#authentication.getPrincipal().getPhoto()}}" height="38" width="38" style="border-radius: 50%; padding: 0;">
 										<span class="username" th:text="${#authentication.getPrincipal().getName()}">Guest</span>
 										<b class="caret"></b>
 								</a>
-								<ul class="dropdown-menu extended logout">
+								<ul class="dropdown-menu extended logout" th:switch="${profile.roles}">
 									<span class="log-arrow-up"></span>
 									<li class="eborder-top">
 										<a th:href="@{/Profile}">
@@ -84,6 +84,7 @@
 									</li>
 									<li><a href="#"><i class="fa fa-comments" aria-hidden="true"></i> Chats</a></li>
 									<li><a th:href="@{/logout}"><i class="fa fa-key" aria-hidden="true"></i> Log Out</a></li>
+									<li th:case="'ADMIN'"><a th:href="@{/admin/index}"><i class="fa fa-key" aria-hidden="true"></i> ADMIN</a></li>
 								</ul>
 							</li>
 							

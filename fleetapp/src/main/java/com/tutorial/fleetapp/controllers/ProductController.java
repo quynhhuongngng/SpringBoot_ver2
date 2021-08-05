@@ -1,5 +1,6 @@
 package com.tutorial.fleetapp.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,16 +44,25 @@ public class ProductController {
 	
 	/*ACCOUNT*/
 	@GetMapping("/productlist")
-	public String getProductView(Model model) {
-    	List<Product> productList = productService.getProduct();
+	public String getProductView(Model model, Principal principal) {
+		//Hiển thị dropdown menuheader nếu quyền admin
+		User profile = userService.findByUsername(principal.getName());
+		model.addAttribute("profile", profile);
+		
+		//Hiển thị ds sp tương ứng vs loại sp trên menu header
+		List<Product> productList = productService.getProduct();
 		model.addAttribute("products", productList);
+		//Hiển thị list category trên menu header
 		List<ProductType> productTypeList = productTypeService.getProductType();
 		model.addAttribute("producttypes", productTypeList);
 		return "user/body/product/Product_list";
 	}
 
 	@RequestMapping("product/detail")
-	public String getProductDetail(Model model, @PathParam("id") Integer id) {
+	public String getProductDetail(Model model, @PathParam("id") Integer id, Principal principal) {
+		//Hiển thị dropdown menuheader nếu quyền admin
+		User profile = userService.findByUsername(principal.getName());
+		model.addAttribute("profile", profile);
 		Optional<Product> product1 = productService.findById(id);
 		//Trả về object sản phẩm
 		Product product = product1.get();
@@ -74,7 +84,11 @@ public class ProductController {
 	
 	//Chức năng: Tìm kiếm (gần đúng) trong menu header
 	@PostMapping("/SearchKeywords")
-	public String SearchKeywords(Model model,  @RequestParam("keywords") String keywords) {
+	public String SearchKeywords(Model model,  @RequestParam("keywords") String keywords, Principal principal) {
+		//Hiển thị dropdown menuheader nếu quyền admin
+		User profile = userService.findByUsername(principal.getName());
+		model.addAttribute("profile", profile);
+		
 		//Hiển thị dropdown Category trong menu header
 		List<ProductType> productTypeList = productTypeService.getProductType();
 		model.addAttribute("producttypes", productTypeList);
@@ -87,7 +101,10 @@ public class ProductController {
 	
 	//Hiển thị danh sách dropdown Category
 	@RequestMapping("/SearchProducttype")
-	public String getProductType(Model model, @PathParam("id") Integer id) {
+	public String getProductType(Model model, @PathParam("id") Integer id, Principal principal) {
+		//Hiển thị dropdown menuheader nếu quyền admin
+		User profile = userService.findByUsername(principal.getName());
+		model.addAttribute("profile", profile);
 		//Hiển thị dropdown Category trong menu header
 		List<ProductType> productTypeList = productTypeService.getProductType();
 		model.addAttribute("producttypes", productTypeList);
