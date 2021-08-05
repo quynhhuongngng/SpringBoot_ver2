@@ -27,7 +27,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
 				.antMatchers("/product/**").hasAnyAuthority("USER", "ADMIN")
 				
-				.antMatchers("/products/**", "/productadd", "/productadd/**").hasAuthority("ADMIN")
+				.antMatchers("/products/**").hasAuthority("ADMIN")
 				.antMatchers("/users/**").hasAuthority("ADMIN")
 				.antMatchers("/producttypes/**").hasAuthority("ADMIN")
 				.antMatchers("/backup/**").hasAuthority("ADMIN")

@@ -118,13 +118,13 @@ public class ProductController {
 	}
 	
 	//Chức năng: Thêm sản phẩm
-	@GetMapping("/productadd")
+	@GetMapping("/products/productadd")
 	public String addProduct(Model model) {
 		//Hiển thị drop down loại sp
 		List<ProductType> productTypeList = productTypeService.getProductType();
 		model.addAttribute("producttypes", productTypeList);
 
-		return "admin/body/productadd";
+		return "admin/body/ProductAdd";
 	}
 
 	@PostMapping(value = "products/addNew")

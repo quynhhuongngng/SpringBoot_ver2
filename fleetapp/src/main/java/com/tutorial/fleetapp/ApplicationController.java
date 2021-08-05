@@ -28,7 +28,7 @@ public class ApplicationController {
 		//Hiển thị list category trên menu header
 		List<ProductType> productTypeList = productTypeService.getProductType();
 		model.addAttribute("producttypes", productTypeList);
-		return "user/index";
+		return "admin/index";
 	}
 
 	@GetMapping("/login")
