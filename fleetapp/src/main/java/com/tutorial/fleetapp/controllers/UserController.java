@@ -3,40 +3,30 @@ package com.tutorial.fleetapp.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Base64;
 import java.util.List;
 
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.tutorial.fleetapp.models.Comment;
-import com.tutorial.fleetapp.models.Product;
 import com.tutorial.fleetapp.models.ProductType;
 import com.tutorial.fleetapp.models.User;
+import com.tutorial.fleetapp.services.ProductTypeService;
 import com.tutorial.fleetapp.services.UserService;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
-import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
-import javax.websocket.server.PathParam;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,7 +37,7 @@ public class UserController {
 	private UserService userService;
 
 	@Autowired
-	private BCryptPasswordEncoder encoder;
+	private ProductTypeService productTypeService;
 	
 	@Autowired
 	ServletContext app;
@@ -62,41 +52,26 @@ public class UserController {
 			@RequestParam("firstname") String fname, @RequestParam("lastname") String lname,
 			@RequestParam("photo_upload") MultipartFile file)throws IllegalStateException, IOException{
 		User profile = userService.findByUsername(principal.getName());
-		
 		profile.setFirstname(fname);
 		profile.setLastname(lname);
-		
-		
 		if(!file.isEmpty()) {
 			String realPath = ResourceUtils.getURL("classpath:").getPath() + "static"+"/img/photos";
 			File f = new File(realPath, file.getOriginalFilename());
 			file.transferTo(f);
 			profile.setPhoto(f.getName());
 		}
-		
-//		if(!file.isEmpty()) {
-//			profile.setPhoto(file.getOriginalFilename());
-//			String path = app.getRealPath("/static/img/photos"+profile.getPhoto());
-//			file.transferTo(new File(path));
-//		}
-		
 		userService.save(profile);
 		redir.addFlashAttribute("message", "Xác nhận đã thay đổi thông tin!");
-		return "redirect:/users/profile"; 
+		return "redirect:/Profile"; 
 	}
-	
-	
 	
 	@PostMapping("/account/change")
 	public String changePassword(Model model, RedirectAttributes redir, @RequestParam("id") Integer id,
 			@RequestParam("password") String pw, @RequestParam("newpassword") String pw1,
 			@RequestParam("confirmPassword") String pw2) {
-
 		PasswordEncoder passencoder = new BCryptPasswordEncoder();
-
 		Optional<User> user1 = userService.findById(id);
 		User user = user1.get();
-
 		if (!pw1.equals(pw2)) {
 			redir.addFlashAttribute("message", "Xác nhận mật khẩu không trùng khớp!");
 		} else {
@@ -110,36 +85,23 @@ public class UserController {
 				redir.addFlashAttribute("message", "Thay đổi mật khẩu thành công!");
 			}
 		}
-
-		return "redirect:/users/profile";
+		return "redirect:/Profile";
 	}
 
 	// Hiển thị thông tin user
-	@RequestMapping("/users/profile")
+	@RequestMapping("/Profile")
 	public String getProfileHeader(Model model, Principal principal) {
+		List<ProductType> productTypeList = productTypeService.getProductType();
+		model.addAttribute("producttypes", productTypeList);
 		// Get the User in a Controller
 		User profile = userService.findByUsername(principal.getName());
-
 		model.addAttribute("profile", profile);
-
 		return "/user/body/account/Profile";
 	}
 
-//	@RequestMapping("/users/profile")
-//	public String getProfileHeader(Model model) {
-//		//Get the User in a Controller
-//		
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		if (!(authentication instanceof AnonymousAuthenticationToken)) {
-//		    String currentUserName = authentication.getName();
-//		    return currentUserName;
-//		}
-//		
-//
-//		return "/user/body/account/Profile";
-//	}
 
-	// ADMIN
+
+	/*ADMIN*/
 
 	@GetMapping("/users")
 	public String getUsers(Model model) {

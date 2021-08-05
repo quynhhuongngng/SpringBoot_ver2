@@ -53,8 +53,6 @@ public class CommentController {
 			comment.setProductId(id);
 			// comment.setUserId(userId);
 			comment.setCommentedDate(new Date());
-			
-			System.out.println("Hello world");
 			commentService.save(comment);
 			return "redirect:/product/detail?id={id}";
 		// }

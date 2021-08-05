@@ -25,11 +25,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/register/**", "/resources/**", "/css/**", "/fonts/**", "/img/**", "/js/**").permitAll()
 				.antMatchers("/").hasAnyAuthority("USER", "ADMIN")
 				.antMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
+				.antMatchers("/product/**").hasAnyAuthority("USER", "ADMIN")
+				
+				.antMatchers("/products/**").hasAuthority("ADMIN")
+				.antMatchers("/users/**").hasAuthority("ADMIN")
+				.antMatchers("/producttypes/**").hasAuthority("ADMIN")
+				.antMatchers("/backup/**").hasAuthority("ADMIN")
 				.antMatchers("/admin/**").hasAuthority("ADMIN")
-				.antMatchers("/product").hasAnyAuthority("USER", "ADMIN")
-				.antMatchers("/product/**").hasAuthority("ADMIN")
-
-				// .antMatchers("/users/addNew").permitAll()
+				
+				
+				
 				.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
 				.invalidateHttpSession(true).clearAuthentication(true)
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").permitAll()

@@ -41,50 +41,66 @@ public class ProductController {
 	private ProductTypeService productTypeService;
 	
 	
-	//USER
+	/*ACCOUNT*/
 	@GetMapping("/productlist")
 	public String getProductView(Model model) {
-		List<Product> productList = productService.getProduct();
+    	List<Product> productList = productService.getProduct();
 		model.addAttribute("products", productList);
-
 		List<ProductType> productTypeList = productTypeService.getProductType();
 		model.addAttribute("producttypes", productTypeList);
 		return "user/body/product/Product_list";
 	}
 
 	@RequestMapping("product/detail")
-	public String getProductDetail(Model model,@PathParam("id") Integer id) {
-
+	public String getProductDetail(Model model, @PathParam("id") Integer id) {
 		Optional<Product> product1 = productService.findById(id);
 		//Trả về object sản phẩm
 		Product product = product1.get();
-		model.addAttribute("product",product);
-
+		model.addAttribute("product", product);
 		// Trả về mảng sản phẩm
 		List<Product> productList = productService.getProduct();
 		model.addAttribute("products", productList);
-
 		// Trả về mảng người dùng
 		List<User> userlist = userService.getUsers();
 		model.addAttribute("users", userlist);
-
 		// Trả về mảng comment theo id sản phẩm
 		List<Comment> commentList = product.getComments();
 		model.addAttribute("comments", commentList);
-
 		// Trả về mảng loại sản phẩm
 		List<ProductType> productTypeList = productTypeService.getProductType();
 		model.addAttribute("producttypes", productTypeList);
-
 		return "user/body/product/Product_Detail";
 	}
 	
+	//Chức năng: Tìm kiếm (gần đúng) trong menu header
+	@PostMapping("/SearchKeywords")
+	public String SearchKeywords(Model model,  @RequestParam("keywords") String keywords) {
+		//Hiển thị dropdown Category trong menu header
+		List<ProductType> productTypeList = productTypeService.getProductType();
+		model.addAttribute("producttypes", productTypeList);
+		//Hiển thị sản phẩm tương ứng mỗi loại sp Category
+		List<Product> productList = productService.findByKeywords(keywords);
+		model.addAttribute("products", productList);
+
+		return "user/body/product/Product_list";
+	}
+	
+	//Hiển thị danh sách dropdown Category
+	@RequestMapping("/SearchProducttype")
+	public String getProductType(Model model, @PathParam("id") Integer id) {
+		//Hiển thị dropdown Category trong menu header
+		List<ProductType> productTypeList = productTypeService.getProductType();
+		model.addAttribute("producttypes", productTypeList);
+		//Hiển thị sản phẩm tương ứng mỗi loại sp Category
+		List<Product> productList = productService.findByProductType(id);
+		model.addAttribute("products", productList);
+		
+		return "user/body/product/Product_list";
+	}
 	
 	
-	
-	
-	//ADMIN
-	// Get All Countrys
+	/*ADMIN*/
+	//Hiển thị toàn bộ thông tin sp
 	@GetMapping("/products")
 	public String getProduct(Model model) {
 		List<Product> productList = productService.getProduct();
@@ -95,28 +111,29 @@ public class ProductController {
 		return "admin/body/product";
 	}
 	
-
 	@RequestMapping("products/findById")
 	@ResponseBody
 	public Optional<Product> findById(Integer id) {
 		return productService.findById(id);
 	}
-
+	
+	//Chức năng: Thêm sản phẩm
 	@GetMapping("/productadd")
 	public String addProduct(Model model) {
+		//Hiển thị drop down loại sp
 		List<ProductType> productTypeList = productTypeService.getProductType();
 		model.addAttribute("producttypes", productTypeList);
 
 		return "admin/body/productadd";
 	}
 
-	// Add Country
 	@PostMapping(value = "products/addNew")
 	public String addNew(Product product) {
 		productService.save(product);
 		return "redirect:/products";
 	}
-
+	
+	//Chức năng: Chỉnh sửa sản phẩm
 	@RequestMapping(value = "products/update", method = { RequestMethod.PUT, RequestMethod.GET })
 	public String update(Product product, @RequestParam("photo") String photo, @RequestParam("image") String image) {
 		if (image.isEmpty()) {
@@ -127,7 +144,8 @@ public class ProductController {
 		productService.save(product);
 		return "redirect:/products";
 	}
-
+	
+	//Chức năng xóa sản phẩm
 	@RequestMapping(value = "products/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
 	public String xoa(Integer id) {
 		productService.delete(id);

@@ -24,7 +24,8 @@ public class ApplicationController {
 	public String goHome(Model model ) {
 		List<Product> productList = productService.getProduct();
 		model.addAttribute("products", productList);
-
+		
+		//Hiển thị list category trên menu header
 		List<ProductType> productTypeList = productTypeService.getProductType();
 		model.addAttribute("producttypes", productTypeList);
 		return "user/index";
