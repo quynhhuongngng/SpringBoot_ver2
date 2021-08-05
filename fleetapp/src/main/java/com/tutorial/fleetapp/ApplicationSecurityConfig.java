@@ -27,11 +27,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
 				.antMatchers("/product/**").hasAnyAuthority("USER", "ADMIN")
 				
-				.antMatchers("/products/**").hasAuthority("ADMIN")
+				.antMatchers("/products/**", "/productadd", "/productadd/**").hasAuthority("ADMIN")
 				.antMatchers("/users/**").hasAuthority("ADMIN")
 				.antMatchers("/producttypes/**").hasAuthority("ADMIN")
 				.antMatchers("/backup/**").hasAuthority("ADMIN")
-				.antMatchers("/admin/**").hasAuthority("ADMIN")
+				
 				
 				
 				
@@ -42,9 +42,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.headers().xssProtection();
 				
-				/*
-				 * .formLogin().permitAll() .and() .logout().permitAll() .and()
-				 */
+		//http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
+				
 //				.exceptionHandling().accessDeniedPage("/403");
 	}
 
