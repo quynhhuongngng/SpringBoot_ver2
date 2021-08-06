@@ -115,6 +115,17 @@ public class ProductController {
 		return "user/body/product/Product_list";
 	}
 	
+	//Hiển thị All sp nổi bật
+		@RequestMapping("/productspecial")
+		public String getAllProductSpecial(Model model, Principal principal) {
+			User profile = userService.findByUsername(principal.getName());
+			model.addAttribute("profile", profile);
+			List<Product> productList = productService.findBySpecial();
+			model.addAttribute("products", productList);
+			List<ProductType> productTypeList = productTypeService.getProductType();
+			model.addAttribute("producttypes", productTypeList);
+			return "user/body/product/Product_list";
+		}
 	
 	/*ADMIN*/
 	//Hiển thị toàn bộ thông tin sp
