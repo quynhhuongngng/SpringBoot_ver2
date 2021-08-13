@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<!-- xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" -->>
+<html xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
 <head>
 <!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
@@ -70,22 +70,38 @@
 						<ul class="nav navbar-nav navbar-right">
 							<li class="dropdown" th:object="${profile}">
 								<a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding: 5px 5px;">
-										<img alt="" th:src="@{'/img/photos/' + ${#authentication.getPrincipal().getPhoto()}}" height="38" width="38" style="border-radius: 50%; padding: 0;">
-										<span class="username" th:text="${#authentication.getPrincipal().getName()}">Guest</span>
-										<b class="caret"></b>
-								</a>
-								<ul class="dropdown-menu extended logout" th:switch="${profile.roles}">
-									<span class="log-arrow-up"></span>
-									<li class="eborder-top">
-										<a th:href="@{/Profile}">
-												<input type="text" th:value="${#authentication.getPrincipal().getId()}" name="id" hidden="hidden">
-												<i class="fa fa-user-circle" aria-hidden="true"></i> My Profile
-										</a>
-									</li>
-									<li><a href="#"><i class="fa fa-comments" aria-hidden="true"></i> Chats</a></li>
-									<li><a th:href="@{/logout}"><i class="fa fa-key" aria-hidden="true"></i> Log Out</a></li>
-									<li th:case="'ADMIN'"><a th:href="@{/admin/index}"><i class="fa fa-key" aria-hidden="true"></i> ADMIN</a></li>
-								</ul>
+								
+									<div sec:authorize="isAuthenticated()">
+ 										<img alt="" th:src="@{'/img/photos/' + ${#authentication.getPrincipal().getPhoto()}}" height="38" width="38" style="border-radius: 50%; padding: 0;">
+ 										<span class="username" th:text="${#authentication.getPrincipal().getName()}">Tên người dùng header</span>
+										<b class="caret"></b> 
+										
+										<ul class="dropdown-menu extended logout" >
+												<span class="log-arrow-up"></span>
+											<li class="eborder-top">
+												<a th:href="@{/Profile}">
+ 													<input type="text" th:value="${#authentication.getPrincipal().getId()}" name="id" hidden="hidden">
+													<i class="fa fa-user-circle" aria-hidden="true"></i> My Profile
+												</a>
+											</li>
+											<li><a href="#"><i class="fa fa-comments" aria-hidden="true"></i> Chats</a></li>
+											<li><a th:href="@{/logout}"><i class="fa fa-key" aria-hidden="true"></i> Log Out</a></li>									 
+ 											<li sec:authorize-url="GET /admin/" ><a th:href="@{/admin/index}"><i class="fa fa-key" aria-hidden="true"></i> ADMIN</a></li>
+ 
+ 										</ul> 
+									</div>
+																
+									<div sec:authorize="isAnonymous()">
+ 										<span class="username">Guest</span>
+										<b class="caret"></b> 
+										<ul class="dropdown-menu extended logout" >
+											<span class="log-arrow-up"></span>
+											<li><a href="#"><i class="fa fa-comments" aria-hidden="true"></i> Chats</a></li>
+											<li><a th:href="@{/logout}"><i class="fa fa-key" aria-hidden="true"></i> Log Out</a></li>
+										</ul>
+									</div>
+ 								</a>
+
 							</li>
 							
 							<li class="active">

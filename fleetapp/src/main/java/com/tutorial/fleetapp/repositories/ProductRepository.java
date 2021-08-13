@@ -23,7 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	@Query("SELECT p FROM Product p WHERE p.producttypeid = :id")
 	public List<Product> getByProductType(@Param("id") Integer id);
 	
-	//Hiển thị sp đặc biệt
-	@Query("SELECT p FROM Product p WHERE p.special= true")
+	//Hiển thị sp đặc biệt - theo từ ngày mới nhất
+	@Query("SELECT p FROM Product p WHERE p.special= true  ORDER BY p.date ASC")
 	public List<Product> getBySpecial();
 }

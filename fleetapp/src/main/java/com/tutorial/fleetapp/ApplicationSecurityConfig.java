@@ -21,9 +21,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
-				.antMatchers("/login", "/resources/**", "/css/**", "/fonts/**", "/img/**").permitAll()
+				.antMatchers("/","/login", "/resources/**", "/css/**", "/fonts/**", "/img/**").permitAll()
 				.antMatchers("/register/**", "/resources/**", "/css/**", "/fonts/**", "/img/**", "/js/**").permitAll()
-				.antMatchers("/").hasAnyAuthority("USER", "ADMIN")
+				
 				.antMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
 				.antMatchers("/product/**").hasAnyAuthority("USER", "ADMIN")
 				
@@ -33,14 +33,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/backup/**").hasAuthority("ADMIN")
 				.antMatchers("/admin/**").hasAuthority("ADMIN")
 				
+				.and().formLogin().loginPage("/login").permitAll()
+                .and().logout().invalidateHttpSession(true).clearAuthentication(true).logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
+                .and().headers().frameOptions().sameOrigin().xssProtection();;
 				
-				
-				.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
+				/*.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
 				.invalidateHttpSession(true).clearAuthentication(true)
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").permitAll()
 
 				.and()
-				.headers().xssProtection();
+				.headers().xssProtection();*/
 				
 		//http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 				
@@ -70,5 +72,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		return provider;
 	}
-
+	
+	/* Hiển thị xác thực FE
+	 * @Bean public SpringSecurityDialect springSecurityDialect(){ return new
+	 * SpringSecurityDialect(); }
+	 */
 }

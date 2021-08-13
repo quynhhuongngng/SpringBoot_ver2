@@ -26,11 +26,11 @@ public class ApplicationController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("/")
+	@GetMapping(value = {"/","/index","/home"})
 	public String goHome(Model model, Principal principal) {
-		//Hiển thị dropdown menuheader quyền admin
-		User profile = userService.findByUsername(principal.getName());
-		model.addAttribute("profile", profile);
+//		//Hiển thị dropdown menuheader quyền admin
+//		User profile = userService.findByUsername(principal.getName());
+//		model.addAttribute("profile", profile);
 		
 		//Hiển thị list category trên menu header
 		List<ProductType> productTypeList = productTypeService.getProductType();
